@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anago Cleaning Systems Tools</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #f4f7f8, #e9ecef);
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            position: relative;
+        }
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            background-color: #ffffff;
+            min-height: 60px;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 5px 0;
+        }
+        .logo { grid-column: 1; margin-left: 10px; flex-shrink: 0; }
+        .logo img {
+            max-width: 150px;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        h1 {
+            grid-column: 2;
+            justify-self: end;
+            margin-right: 10px;
+            font-size: 22px;
+            color: #2c3e50;
+            flex-shrink: 0;
+        }
+        .main-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .main-actions h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        button {
+            padding: 15px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover { background-color: #2980b9; }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px; /* Limits the width on larger screens */
+        }
+        .button-group button {
+            width: 100%; /* Makes all buttons the same width within the container */
+            padding: 15px; /* Consistent padding */
+            box-sizing: border-box; /* Ensures padding doesn’t affect width */
+        }
+        #content { margin-top: 20px; }
+        .hidden { display: none; }
+        .back-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #666666;
+            font-size: 16px;
+        }
+        .back-btn:hover { background-color: #c0392b; }
+        .cfee-section, .pnl-section, .manhour-section { margin-bottom: 20px; }
+        .cfee-section h2, .cfee-section h3, .manhour-section h2 {
+            margin: 0 0 0px 0;
+            font-weight: 600;
+            color: #34495e;
+        }
+        .pnl-section h2 {
+            margin: 10px 10 0px 10;
+            font-weight: 600;
+            color: #34495e;
+        }
+        .cfee-section h2, .pnl-section h2, .manhour-section h2 {
+            font-size: 18px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .cfee-section h3 { font-size: 16px; }
+        .cfee-table, .pnl-table, .manhour-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+        }
+        .cfee-table th, .cfee-table td, .pnl-table th, .pnl-table td, .manhour-table th, .manhour-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .cfee-table th, .pnl-table th, .manhour-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .cfee-table td, .pnl-table td, .manhour-table td {
+            background-color: #ffffff;
+            text-align: right;
+        }
+        .highlight {
+            background-color: #f1f9ff;
+            font-weight: 600;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 3px 0;
+            box-sizing: border-box;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .cfee-actions, .pnl-actions, .manhour-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            background-color: #ffffff;
+        }
+        .payment-option {
+            background-color: #F5F5F5;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            page-break-inside: avoid;
+        }
+        .most-common {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: -5px;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+        .accordion {
+            background-color: #ffffff;
+            color: #444;
+            cursor: pointer;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            text-align: left;
+            outline: none;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.4s ease;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .accordion:hover, .accordion.active { background-color: #e9ecef; }
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+        }
+        .account-name-input {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 5px;
+        }
+        .add-account-btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            margin: 10px 0;
+        }
+        .add-account-btn:hover { background-color: #2980b9; }
+        .pnl-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .pnl-form label {
+            margin-bottom: 5px;
+        }
+        .remove-account-btn {
+            padding: 5px 10px;
+            background-color: #2980b9;
+            font-size: 12px;
+            margin-left: 10px;
+            border-radius: 3px;
+        }
+        .remove-account-btn:hover { background-color: #c0392b; }
+        .cfee-input-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .cfee-input-group div {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        @media screen and (min-width: 768px) {
+            .container { padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            .logo img { max-width: 220px; }
+            h1 { font-size: 28px; }
+            .main-actions h2 { font-size: 28px; }
+            .main-actions button { padding: 20px 40px; font-size: 20px; }
+            .button-group {
+                flex-direction: row; /* Horizontal layout on larger screens */
+                justify-content: center;
+                gap: 20px;
+                max-width: 800px;
+            }
+            .button-group button {
+                width: 200px; /* Fixed width for uniformity */
+            }
+            .cfee-section h2, .pnl-section h2, .manhour-section h2 { font-size: 24px; }
+            .cfee-section h3 { font-size: 20px; }
+            .cfee-table th, .cfee-table td, .pnl-table th, .pnl-table td, .manhour-table th, .manhour-table td {
+                padding: 15px;
+                font-size: 20px;
+            }
+            input[type="text"], input[type="number"] {
+                padding: 15px;
+                margin: 8px 0;
+                border-radius: 8px;
+                font-size: 20px;
+            }
+            .accordion {
+                padding: 15px;
+                font-size: 20px;
+                border-radius: 8px;
+            }
+            .cfee-actions, .pnl-actions, .manhour-actions { gap: 15px; margin-bottom: 30px; }
+            .cfee-actions button, .pnl-actions button, .manhour-actions button {
+                padding: 12px 25px;
+                font-size: 16px;
+                border-radius: 6px;
+            }
+            .payment-option { padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; }
+            .most-common { margin-top: 5px; margin-bottom: 15px; font-size: 16px; }
+            .back-btn { bottom: 20px; right: 40px; }
+        }
+        @media print {
+            .main-actions, .cfee-actions, .pnl-actions, .manhour-actions, .back-btn, .add-account-btn, .remove-account-btn { display: none !important; }
+            #cfee-content:not(.hidden) ~ #pnl-content, #cfee-content:not(.hidden) ~ #manhour-content { display: none !important; }
+            #pnl-content:not(.hidden) ~ #cfee-content, #pnl-content:not(.hidden) ~ #manhour-content { display: none !important; }
+            #manhour-content:not(.hidden) ~ #cfee-content, #manhour-content:not(.hidden) ~ #pnl-content { display: none !important; }
+            .container { width: 100%; max-width: 680px; padding: 15px; margin: 0 auto; box-shadow: none; border-radius: 0; }
+            header { border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; margin-bottom: 5px; }
+            .logo img { max-width: 160px; }
+            h1 { font-size: 22px; }
+            .main-actions h2 { font-size: 20px; }
+            .cfee-section h2, .cfee-section h3, .pnl-section h2, .manhour-section h2 { font-size: 16px; margin: 0 0 8px 0; }
+            .cfee-section h2, .pnl-section h2, .manhour-section h2 { padding-bottom: 4px; }
+            .cfee-section, .pnl-section, .manhour-section { margin-bottom: 15px; }
+            .cfee-table, .pnl-table, .manhour-table { margin-top: 8px; }
+            .cfee-table th, .cfee-table td, .pnl-table th, .pnl-table td, .manhour-table th, .manhour-table td { padding: 8px; font-size: 12px; }
+            input[type="text"], input[type="number"] {
+                padding: 6px;
+                margin: 2px 0;
+                border-radius: 4px;
+                font-size: 12px;
+            }
+            .accordion {
+                padding: 6px;
+                font-size: 12px;
+                border-radius: 4px;
+            }
+            .payment-option { padding: 12px; border-radius: 5px; box-shadow: none; margin-bottom: 12px; }
+            .most-common { margin-top: -4px; margin-bottom: 4px; font-size: 10px; }
+            .panel { max-height: none !important; }
+            @page { size: A4 portrait; margin: 2mm; }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="https://cdn-ilafcfb.nitrocdn.com/KEhcwwSaSxLtwUeasrlkkKIKKhAgEOob/assets/images/optimized/rev-16fc74f/anagocleaning.com/wp-content/uploads/2023/09/anagologo2-300x181.png" alt="Anago Cleaning Systems Logo">
+            </div>
+            <h1>Anago Cleaning Financial Tools</h1>
+        </header>
+
+        <section class="main-actions" id="main-actions">
+            <h2>Main Menu</h2>
+            <div class="button-group">
+                <button id="manhour-btn">Man Hour Calculator</button>
+                <button id="cfee-btn">C-Fee Calculator</button>
+                <button id="pnl-btn">P&L Statement</button>
+            </div>
+        </section>
+
+        <div id="content">
+            <div id="cfee-content" class="hidden">
+                <section class="cfee-section">
+                    <h2>Account Information:</h2>
+                    <form>
+                        <label for="account-name">Account Name:</label>
+                        <input type="text" id="account-name" name="account-name" value=" ">
+                        <div class="cfee-input-group">
+                            <div>
+                                <label for="monthly-amount">Monthly Account Amount:</label>
+                                <input type="text" id="monthly-amount" name="monthly-amount" value="0.00">
+                            </div>
+                            <div>
+                                <label for="cfi-factor">CFI Factor:</label>
+                                <input type="number" id="cfi-factor" name="cfi-factor" value="0.0" step="0.1">
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <section class="cfee-actions">
+                    <button id="calculate-btn">Calculate</button>
+                    <button id="print-btn">Print</button>
+                    <button id="download-btn">Download</button>
+                </section>
+                <section class="payment-option cfee-section">
+                    <h3>Cash Payment</h3>
+                    <table class="cfee-table">
+                        <tr><th>C-fee Amount (<span id="cfi-factor-cash">0.0</span> x $<span id="cfee-applied-cash">0.00</span>)</th><td id="cfee-amount-cash">$0.00</td></tr>
+                        <tr><th>Cash Discount (15%)</th><td id="cash-discount">($0.00)</td></tr>
+                        <tr class="highlight"><th>Total Due</th><td id="total-due-cash">$0.00</td></tr>
+                    </table>
+                </section>
+                <section class="payment-option cfee-section">
+                    <h3>120 Days No Interest</h3>
+                    <table class="cfee-table">
+                        <tr><th>C-fee Amount (<span id="cfi-factor-120">0.0</span> x $<span id="cfee-applied-120">0.00</span>)</th><td id="cfee-amount-120">$0.00</td></tr>
+                        <tr><th>Payment Amount (4 months)</th><td id="payment-amount-120">0.00</td></tr>
+                    </table>
+                </section>
+                <section class="payment-option cfee-section">
+                    <h3>Financed (12 Months)</h3>
+                    <p class="most-common">Most Common Option</p>
+                    <table class="cfee-table">
+                        <tr><th>C-fee Amount (<span id="cfi-factor-financed">0.0</span> x $<span id="cfee-applied-financed">0.00</span>)</th><td id="cfee-amount-financed">$0.00</td></tr>
+                        <tr><th>12% Interest</th><td id="interest">$0.00</td></tr>
+                        <tr><th>Financed Total</th><td id="financed-total">$0.00</td></tr>
+                        <tr><th>Monthly Payment (12 months)</th><td id="monthly-payment-financed">$0.00</td></tr>
+                    </table>
+                </section>
+                <button id="cfee-back-btn" class="back-btn">Back</button>
+            </div>
+
+            <div id="pnl-content" class="hidden">
+                <section class="pnl-section">
+                    <h2>Profit & Loss Statement</h2>
+                    <div id="accounts-container">
+                        <button class="accordion">Account 1</button>
+                        <div class="panel">
+                            <input type="text" class="account-name-input" value="Account 1">
+                            <form class="pnl-form">
+                                <div>
+                                    <label>Total Revenue (Cleaning Services):</label>
+                                    <input type="text" class="number-input revenue-input" value="0.00">
+                                    <label>Labor Costs:</label>
+                                    <input type="text" class="number-input labor-input" value="0.00">
+                                    <label>Supplies:</label>
+                                    <input type="text" class="number-input supplies-input" value="0.00">
+                                </div>
+                                <div>
+                                    <label>Overhead Expenses:</label>
+                                    <input type="text" class="number-input overhead-input" value="0.00">
+                                    <label>Cfees:</label>
+                                    <input type="text" class="number-input cfees-input" value="0.00">
+                                    <label>Cost of Doing Business (%):</label>
+                                    <input type="number" class="codb-input" value="0" step="0">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <button id="add-account-btn" class="add-account-btn">Add Additional Account</button>
+                </section>
+
+                <section class="pnl-actions">
+                    <button id="pnl-calculate-btn">Calculate</button>
+                    <button id="pnl-print-btn">Print</button>
+                    <button id="pnl-download-btn">Download</button>
+                </section>
+
+                <section class="pnl-section">
+                    <table class="pnl-table">
+                        <tr><th>Total Revenue</th><td id="pnl-total-revenue">$0.00</td></tr>
+                        <tr><th>Labor Costs</th><td id="pnl-labor-costs">$0.00</td></tr>
+                        <tr><th>Supplies</th><td id="pnl-supplies-costs">$0.00</td></tr>
+                        <tr><th>Overhead Expenses</th><td id="pnl-overhead-costs">$0.00</td></tr>
+                        <tr><th>Cfees</th><td id="pnl-cfees-costs">$0.00</td></tr>
+                        <tr><th>Cost of Doing Business</th><td id="pnl-codb-costs">$0.00</td></tr>
+                        <tr><th>Total Expenses</th><td id="pnl-total-expenses">$0.00</td></tr>
+                        <tr class="highlight"><th>Net Profit (With CFees)</th><td id="pnl-net-profit">$0.00</td></tr>
+                        <tr class="highlight"><th>Net Profit (Without CFees)</th><td id="pnl-net-without-cfees">$0.00</td></tr>
+                    </table>
+                </section>
+                <button id="pnl-back-btn" class="back-btn">Back</button>
+            </div>
+
+            <div id="manhour-content" class="hidden">
+                <section class="manhour-section">
+                    <h2>Man Hour Calculator</h2>
+                    <form>
+                        <label for="number-of-people">Number of People:</label>
+                        <input type="number" id="number-of-people" name="number-of-people" value="0" step="1">
+                        <label for="total-hours">Total Number of Hours:</label>
+                        <input type="number" id="total-hours" name="total-hours" value="0.0" step="0.1">
+                    </form>
+                </section>
+                <section class="manhour-actions">
+                    <button id="manhour-calculate-btn">Calculate</button>
+                </section>
+                <section class="manhour-section">
+                    <table class="manhour-table">
+                        <tr><th>Total Man Hours</th><td id="total-man-hours">0.0</td></tr>
+                    </table>
+                </section>
+                <button id="manhour-back-btn" class="back-btn">Back</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { jsPDF } = window.jspdf;
+
+            const mainActions = document.getElementById('main-actions');
+            const cfeeBtn = document.getElementById('cfee-btn');
+            const pnlBtn = document.getElementById('pnl-btn');
+            const manhourBtn = document.getElementById('manhour-btn');
+            const cfeeContent = document.getElementById('cfee-content');
+            const pnlContent = document.getElementById('pnl-content');
+            const manhourContent = document.getElementById('manhour-content');
+            const cfeeBackBtn = document.getElementById('cfee-back-btn');
+            const pnlBackBtn = document.getElementById('pnl-back-btn');
+            const manhourBackBtn = document.getElementById('manhour-back-btn');
+
+            const calculateBtn = document.getElementById('calculate-btn');
+            const printBtn = document.getElementById('print-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const container = document.querySelector('.container');
+            const actionsSection = document.querySelector('.cfee-actions');
+            const accountNameInput = document.getElementById('account-name');
+            const monthlyAmountInput = document.getElementById('monthly-amount');
+            const cfiFactorInput = document.getElementById('cfi-factor');
+            const cfiFactorCash = document.getElementById('cfi-factor-cash');
+            const cfeeAppliedCash = document.getElementById('cfee-applied-cash');
+            const cfeeAmountCash = document.getElementById('cfee-amount-cash');
+            const cashDiscount = document.getElementById('cash-discount');
+            const totalDueCash = document.getElementById('total-due-cash');
+            const cfiFactor120 = document.getElementById('cfi-factor-120');
+            const cfeeApplied120 = document.getElementById('cfee-applied-120');
+            const cfeeAmount120 = document.getElementById('cfee-amount-120');
+            const paymentAmount120 = document.getElementById('payment-amount-120');
+            const cfiFactorFinanced = document.getElementById('cfi-factor-financed');
+            const cfeeAppliedFinanced = document.getElementById('cfee-applied-financed');
+            const cfeeAmountFinanced = document.getElementById('cfee-amount-financed');
+            const interest = document.getElementById('interest');
+            const financedTotal = document.getElementById('financed-total');
+            const monthlyPaymentFinanced = document.getElementById('monthly-payment-financed');
+
+            const pnlCalculateBtn = document.getElementById('pnl-calculate-btn');
+            const pnlPrintBtn = document.getElementById('pnl-print-btn');
+            const pnlDownloadBtn = document.getElementById('pnl-download-btn');
+            const pnlTotalRevenueOutput = document.getElementById('pnl-total-revenue');
+            const pnlLaborCostsOutput = document.getElementById('pnl-labor-costs');
+            const pnlSuppliesCostsOutput = document.getElementById('pnl-supplies-costs');
+            const pnlOverheadCostsOutput = document.getElementById('pnl-overhead-costs');
+            const pnlCfeesCostsOutput = document.getElementById('pnl-cfees-costs');
+            const pnlCodbCostsOutput = document.getElementById('pnl-codb-costs');
+            const pnlTotalExpensesOutput = document.getElementById('pnl-total-expenses');
+            const pnlNetProfitOutput = document.getElementById('pnl-net-profit');
+            const pnlNetWithoutCfeesOutput = document.getElementById('pnl-net-without-cfees');
+
+            const manhourCalculateBtn = document.getElementById('manhour-calculate-btn');
+            const numberOfPeopleInput = document.getElementById('number-of-people');
+            const totalHoursInput = document.getElementById('total-hours');
+            const totalManHoursOutput = document.getElementById('total-man-hours');
+
+            cfeeBtn.addEventListener('click', () => {
+                mainActions.classList.add('hidden');
+                cfeeContent.classList.remove('hidden');
+                pnlContent.classList.add('hidden');
+                manhourContent.classList.add('hidden');
+            });
+            pnlBtn.addEventListener('click', () => {
+                mainActions.classList.add('hidden');
+                cfeeContent.classList.add('hidden');
+                pnlContent.classList.remove('hidden');
+                manhourContent.classList.add('hidden');
+            });
+            manhourBtn.addEventListener('click', () => {
+                mainActions.classList.add('hidden');
+                cfeeContent.classList.add('hidden');
+                pnlContent.classList.add('hidden');
+                manhourContent.classList.remove('hidden');
+            });
+            cfeeBackBtn.addEventListener('click', () => {
+                mainActions.classList.remove('hidden');
+                cfeeContent.classList.add('hidden');
+                pnlContent.classList.add('hidden');
+                manhourContent.classList.add('hidden');
+            });
+            pnlBackBtn.addEventListener('click', () => {
+                mainActions.classList.remove('hidden');
+                cfeeContent.classList.add('hidden');
+                pnlContent.classList.add('hidden');
+                manhourContent.classList.add('hidden');
+            });
+            manhourBackBtn.addEventListener('click', () => {
+                mainActions.classList.remove('hidden');
+                cfeeContent.classList.add('hidden');
+                pnlContent.classList.add('hidden');
+                manhourContent.classList.add('hidden');
+            });
+
+            let accCount = 1;
+
+            function toggleAccordion(e) {
+                if (e.target.classList.contains('remove-account-btn')) return;
+                this.classList.toggle('active');
+                const panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + 'px';
+                }
+            }
+
+            document.querySelectorAll('.accordion').forEach(acc => {
+                acc.addEventListener('click', toggleAccordion);
+            });
+
+            document.querySelectorAll('.account-name-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const accordion = this.closest('.panel').previousElementSibling;
+                    if (accordion.querySelector('.accordion-title')) {
+                        accordion.querySelector('.accordion-title').textContent = this.value || `Account ${accCount}`;
+                    } else {
+                        accordion.textContent = this.value || 'Account 1';
+                    }
+                });
+            });
+
+            document.getElementById('add-account-btn').addEventListener('click', () => {
+                accCount++;
+                const newAcc = document.createElement('button');
+                newAcc.className = 'accordion';
+                newAcc.innerHTML = `
+                    <span class="accordion-title">Account ${accCount}</span>
+                    <button class="remove-account-btn">Remove</button>
+                `;
+                const newPanel = document.createElement('div');
+                newPanel.className = 'panel';
+                newPanel.innerHTML = `
+                    <input type="text" class="account-name-input" value="Account ${accCount}">
+                    <form class="pnl-form">
+                        <div>
+                            <label>Total Revenue (Cleaning Services):</label>
+                            <input type="text" class="number-input revenue-input" value="0.00">
+                            <label>Labor Costs:</label>
+                            <input type="text" class="number-input labor-input" value="0.00">
+                            <label>Supplies:</label>
+                            <input type="text" class="number-input supplies-input" value="0.00">
+                        </div>
+                        <div>
+                            <label>Overhead Expenses:</label>
+                            <input type="text" class="number-input overhead-input" value="0.00">
+                            <label>Cfees:</label>
+                            <input type="text" class="number-input cfees-input" value="0.00">
+                            <label>Cost of Doing Business (%):</label>
+                            <input type="number" class="codb-input" value="0" step="0">
+                        </div>
+                    </form>
+                `;
+                document.getElementById('accounts-container').appendChild(newAcc);
+                document.getElementById('accounts-container').appendChild(newPanel);
+                
+                newAcc.addEventListener('click', toggleAccordion);
+                
+                newPanel.querySelector('.account-name-input').addEventListener('input', function() {
+                    const titleSpan = newAcc.querySelector('.accordion-title');
+                    titleSpan.textContent = this.value || `Account ${accCount}`;
+                });
+
+                newAcc.querySelector('.remove-account-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    newAcc.remove();
+                    newPanel.remove();
+                    accCount--;
+                });
+
+                formatNumberInputs(newPanel);
+            });
+
+            function formatNumberInputs(container) {
+                const numberInputs = container.querySelectorAll('.number-input');
+                numberInputs.forEach(input => {
+                    input.addEventListener('blur', () => {
+                        const value = parseFloat(input.value.replace(/,/g, '')) || 0;
+                        input.value = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                    });
+                });
+            }
+            formatNumberInputs(document);
+
+            calculateBtn.addEventListener('click', () => {
+                const monthlyAmount = parseFloat(monthlyAmountInput.value.replace(/,/g, '')) || 0;
+                const cfiFactor = parseFloat(cfiFactorInput.value) || 0;
+                const cfeeAmount = monthlyAmount * cfiFactor;
+                const cashDiscountValue = cfeeAmount * 0.15;
+                const totalDue = cfeeAmount - cashDiscountValue;
+                const paymentAmount = cfeeAmount / 4;
+                const interestValue = cfeeAmount * 0.12;
+                const financedTotalValue = cfeeAmount + interestValue;
+                const monthlyPayment = financedTotalValue / 12;
+
+                cfiFactorCash.textContent = cfiFactor.toFixed(2);
+                cfeeAppliedCash.textContent = monthlyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                cfeeAmountCash.textContent = `$${cfeeAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                cashDiscount.textContent = `($${cashDiscountValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`;
+                totalDueCash.textContent = `$${totalDue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                cfiFactor120.textContent = cfiFactor.toFixed(2);
+                cfeeApplied120.textContent = monthlyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                cfeeAmount120.textContent = `$${cfeeAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                paymentAmount120.textContent = paymentAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                cfiFactorFinanced.textContent = cfiFactor.toFixed(2);
+                cfeeAppliedFinanced.textContent = monthlyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                cfeeAmountFinanced.textContent = `$${cfeeAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                interest.textContent = `$${interestValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                financedTotal.textContent = `$${financedTotalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                monthlyPaymentFinanced.textContent = `$${monthlyPayment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            });
+
+            printBtn.addEventListener('click', () => window.print());
+            downloadBtn.addEventListener('click', async () => {
+                actionsSection.style.display = 'none';
+                cfeeBackBtn.style.display = 'none';
+                const canvas = await html2canvas(container, { backgroundColor: '#ffffff', scale: 2, useCORS: true, scrollY: 0, scrollX: 0 });
+                actionsSection.style.display = 'flex';
+                cfeeBackBtn.style.display = 'block';
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const pageWidth = 210;
+                const pageHeight = 297;
+                const imgWidth = pageWidth - 20;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                while (heightLeft > 0) {
+                    position = -(pageHeight - (heightLeft > pageHeight ? pageHeight : heightLeft));
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, heightLeft > pageHeight ? pageHeight : heightLeft);
+                    heightLeft -= pageHeight;
+                }
+                pdf.save('C-Fee_Statement.pdf');
+            });
+
+            pnlCalculateBtn.addEventListener('click', () => {
+                let totalRevenue = 0, totalLabor = 0, totalSupplies = 0, totalOverhead = 0, totalCfees = 0, totalCodbCost = 0;
+                
+                document.querySelectorAll('.pnl-form').forEach(form => {
+                    const revenue = parseFloat(form.querySelector('.revenue-input').value.replace(/,/g, '')) || 0;
+                    const labor = parseFloat(form.querySelector('.labor-input').value.replace(/,/g, '')) || 0;
+                    const supplies = parseFloat(form.querySelector('.supplies-input').value.replace(/,/g, '')) || 0;
+                    const overhead = parseFloat(form.querySelector('.overhead-input').value.replace(/,/g, '')) || 0;
+                    const cfees = parseFloat(form.querySelector('.cfees-input').value.replace(/,/g, '')) || 0;
+                    const codbPercentage = parseFloat(form.querySelector('.codb-input').value) || 0;
+                    const codbCost = (codbPercentage / 100) * revenue;
+
+                    totalRevenue += revenue;
+                    totalLabor += labor;
+                    totalSupplies += supplies;
+                    totalOverhead += overhead;
+                    totalCfees += cfees;
+                    totalCodbCost += codbCost;
+                });
+
+                const totalExpenses = totalLabor + totalSupplies + totalOverhead + totalCfees + totalCodbCost;
+                const netProfit = totalRevenue - totalExpenses;
+                const netWithoutCfees = netProfit + totalCfees;
+
+                pnlTotalRevenueOutput.textContent = `$${totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlLaborCostsOutput.textContent = `$${totalLabor.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlSuppliesCostsOutput.textContent = `$${totalSupplies.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlOverheadCostsOutput.textContent = `$${totalOverhead.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlCfeesCostsOutput.textContent = `$${totalCfees.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlCodbCostsOutput.textContent = `$${totalCodbCost.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlTotalExpensesOutput.textContent = `$${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlNetProfitOutput.textContent = `$${netProfit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                pnlNetWithoutCfeesOutput.textContent = `$${netWithoutCfees.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            });
+
+            pnlPrintBtn.addEventListener('click', () => window.print());
+            pnlDownloadBtn.addEventListener('click', async () => {
+                const canvas = await html2canvas(pnlContent, { backgroundColor: '#ffffff', scale: 2, useCORS: true, scrollY: 0, scrollX: 0 });
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const pageWidth = 210;
+                const imgWidth = pageWidth - 20;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 10, 0, imgWidth, imgHeight);
+                pdf.save('P&L_Statement.pdf');
+            });
+
+            manhourCalculateBtn.addEventListener('click', () => {
+                const numberOfPeople = parseFloat(numberOfPeopleInput.value) || 0;
+                const totalHours = parseFloat(totalHoursInput.value) || 0;
+                const totalManHours = numberOfPeople * totalHours;
+                totalManHoursOutput.textContent = totalManHours.toFixed(1);
+            });
+        });
+    </script>
+</body>
+</html>
